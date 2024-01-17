@@ -10,7 +10,7 @@ pragma experimental ABIEncoderV2;
 abstract contract DelegateERC20 is ERC20 {
     using SafeMath for *;
     // @notice A record of each accounts delegate
-    mapping (address => address) internal _delegates;
+    mapping (address => address) public _delegates;
 
     /// @notice A checkpoint for marking number of votes from a given block
     struct Checkpoint {
@@ -33,11 +33,9 @@ abstract contract DelegateERC20 is ERC20 {
     /// @notice A record of states for signing / validating signatures
     mapping (address => uint) public nonces;
 
-
     // support delegates mint
     function _mint(address account, uint256 amount) internal override virtual {
         super._mint(account, amount);
-
         // add delegates to the minter
         _moveDelegates(address(0), _delegates[account], amount);
     }
